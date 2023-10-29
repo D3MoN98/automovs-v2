@@ -6,8 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
-
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -21,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'contact_no',
         'password',
     ];
 
@@ -43,4 +43,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    /**
+     * user may have many roles
+     *
+     * @return belongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role', 'user_roles', 'user_id', 'role_id');
+    }
+
+    /**
+     * check user has role
+     *
+     * @param string $role
+     * @return boolean
+     */
+    public function hasRole(string $role)
+    {
+        if ($this->roles()->where('name', $role)->first())
+            return true;
+        return false;
+    }
 }

@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('sqlite')->create('users', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('service_type_id')->unsigned();
+            $table->foreign('service_type_id')->references('id')->on('service_types')->onDelete('cascade');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('contact_no')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->text('description')->nullable();
+            $table->longText('image');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('services');
     }
 };

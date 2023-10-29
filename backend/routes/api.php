@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\ServiceTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::middleware('guest')->group(function () {
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+
+    Route::post('forget-password', [AuthController::class, 'forgetPassword']);
+    Route::put('reset-password', [AuthController::class, 'ResetPassword']);
 });
 
-Route::get('/user', [UserController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::resource('service', ServiceController::class)->middleware('role:admin');
+});
+
+Route::resource('service-type', ServiceTypeController::class);
