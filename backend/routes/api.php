@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ServiceController;
@@ -40,3 +41,4 @@ Route::resource('service', ServiceController::class);
 Route::resource('service-type', ServiceTypeController::class);
 
 Route::post('contact', [ContactController::class, 'store']);
+Route::post('booking', [BookingController::class, 'store']);
