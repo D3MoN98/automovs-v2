@@ -5,7 +5,7 @@ function Banner() {
         <div className="col-6">
           <h1 className="banner-heading display-5 fw-bold">
             <span className="light-text"> Need Car Servicing?</span> <br />
-            Welcome To
+            Welcome To{" "}
             <span className="automovs-text">
               Auto<span>movs</span>
             </span>

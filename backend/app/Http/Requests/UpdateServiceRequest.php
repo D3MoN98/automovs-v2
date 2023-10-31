@@ -24,7 +24,8 @@ class UpdateServiceRequest extends FormRequest
         return [
             'service_type_id' => 'required',
             'name' => 'required',
-            'image' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'description' => 'required',
+            'image' => 'image|mimes:jpg,png,jpeg,gif,svg,webp|max:2048',
         ];
     }
 }
