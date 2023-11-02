@@ -22,7 +22,7 @@ function OurServices() {
               <p>No service available at the moment</p>
             ) : (
               services.map((item, index) => (
-                <div className="col">
+                <div className="col" key={index}>
                   <div className="card h-100">
                     <div className="card-img-otr">
                       <img
