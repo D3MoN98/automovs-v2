@@ -27,7 +27,6 @@ class Booking extends Model
      */
     protected $casts = [
         'preferred_date' => 'date',
-        'preferred_time' => 'timestamp',
         'status' => 'enum:pending.confirmed.cancelled.completed.in_progress.no_show.expired.refunded.on_hold.rejected'
     ];
 }
