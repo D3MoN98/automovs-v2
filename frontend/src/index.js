@@ -1,18 +1,24 @@
+import "assets/css/all.css";
+import "assets/dashboard/scss/style.scss";
+import "assets/js/common";
+import "assets/scss/style.scss";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import store from "./store"; // Import your Redux store
-
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JavaScript
+
+import store from "store"; // Import your Redux store
+
+import Dashboard from "backend/Dashboard";
+import DashboardLayout from "backend/layout/DashboardLayout";
+import DefaultLayout from "backend/layout/DefaultLayout";
+import Login from "backend/Login";
+import Home from "Home";
+import HomeLayout from "layouts/HomeLayout";
+import NotFound from "NotFound";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./assets/css/all.css";
-import "./assets/css/style.min.css";
-import "./assets/js/common";
-import Home from "./Home";
-import HomeLayout from "./layouts/HomeLayout";
-import NotFound from "./NotFound";
-import reportWebVitals from "./reportWebVitals";
+import reportWebVitals from "reportWebVitals";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +27,25 @@ const router = createBrowserRouter([
       <HomeLayout>
         <Home />
       </HomeLayout>
+    ),
+  },
+  {
+    path: "/admin/login",
+    element: (
+      <DefaultLayout>
+        <Login />
+      </DefaultLayout>
+    ),
+  },
+
+  {
+    path: "/admin/dashboard",
+    element: (
+      <DefaultLayout>
+        <DashboardLayout>
+          <Dashboard />
+        </DashboardLayout>
+      </DefaultLayout>
     ),
   },
   {

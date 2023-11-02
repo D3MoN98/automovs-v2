@@ -1,6 +1,6 @@
+import Footer from "includes/Footer";
+import Header from "includes/Header";
 import { Toaster } from "react-hot-toast";
-import Footer from "../includes/Footer";
-import Header from "../includes/Header";
 
 function HomeLayout({ children }) {
   return (
