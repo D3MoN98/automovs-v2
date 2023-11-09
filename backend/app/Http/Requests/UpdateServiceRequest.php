@@ -25,7 +25,7 @@ class UpdateServiceRequest extends FormRequest
             'service_type_id' => 'required',
             'name' => 'required',
             'description' => 'required',
-            'image' => 'image|mimes:jpg,png,jpeg,gif,svg,webp|max:2048',
+            // 'image' => 'image|mimes:jpg,png,jpeg,gif,svg,webp|max:2048',
         ];
     }
 }

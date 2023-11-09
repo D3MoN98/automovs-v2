@@ -4,11 +4,25 @@ import toast from "react-hot-toast";
 
 // const badResponseCodeExceptions = [422];
 
-const axiosInstance = axios.create({
+let axiosConfigs = {
   baseURL: "http://localhost:8000/",
   withCredentials: true,
   timeout: 10000, // Adjust the timeout as needed
-});
+  headers: {
+    accept: "application/json",
+  },
+};
+
+const auth_token = localStorage.getItem("authToken");
+
+if (auth_token) {
+  axiosConfigs.headers = {
+    ...axiosConfigs.headers,
+    Authorization: "Bearer " + auth_token,
+  };
+}
+
+const axiosInstance = axios.create(axiosConfigs);
 
 // instance.headers.common["Accept"] = "application/json";
 // instance.headers.common["Authorization"] = "AUTH TOKEN";
@@ -21,6 +35,7 @@ axiosInstance.interceptors.response.use(
       // Handle specific HTTP error codes (e.g., 404, 500, 422) or other error responses here
       console.error("Axios Error Response:", error.response.data);
       console.error("Status Code:", error.response.status);
+      toast.error("Network Error:", error.response.data);
     } else if (error.request) {
       // Handle network-related errors (e.g., no internet connection) here
       toast.error("Network Error:", error.message);

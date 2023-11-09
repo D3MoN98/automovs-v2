@@ -28,13 +28,7 @@ export const loginAsync = createAsyncThunk(
 
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
   try {
-    const auth_token = localStorage.getItem("authToken");
-    const headers = {
-      accept: "application/json",
-      Authorization: "Bearer " + auth_token,
-    };
-
-    const response = await axios.get("/api/logout", { headers });
+    const response = await axios.get("/api/logout");
     return response.data;
   } catch (error) {
     throw error.response.data;

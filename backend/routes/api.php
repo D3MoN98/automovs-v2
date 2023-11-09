@@ -35,10 +35,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::resource('service', ServiceController::class)->except(['index']);
+    Route::resource('service-type', ServiceTypeController::class)->except(['index']);
 });
 
-Route::resource('service', ServiceController::class);
-Route::resource('service-type', ServiceTypeController::class);
+Route::get('service', [ServiceController::class, 'index']);
+
 
 Route::post('contact', [ContactController::class, 'store']);
 Route::post('booking', [BookingController::class, 'store']);

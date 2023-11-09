@@ -12,11 +12,12 @@ import {
 import { logoNegative } from "assets/brand/logo-negative";
 import { sygnet } from "assets/brand/sygnet";
 
-// import SimpleBar from "simplebar-react";
-// import "simplebar/dist/simplebar.min.css";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 // sidebar nav config
-// import navigation from "../_nav";
+import navigation from "../_navs";
+import { AppSidebarNav } from "./AppSidebarNav";
 
 const AppSidebar = () => {
   const dispatch = useDispatch();
@@ -37,9 +38,9 @@ const AppSidebar = () => {
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>
       <CSidebarNav>
-        {/* <SimpleBar>
+        <SimpleBar>
           <AppSidebarNav items={navigation} />
-        </SimpleBar> */}
+        </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
         className="d-none d-lg-flex"
