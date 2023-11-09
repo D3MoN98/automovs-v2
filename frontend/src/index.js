@@ -11,13 +11,19 @@ import Dashboard from "backend/Dashboard";
 import DashboardLayout from "backend/layout/DashboardLayout";
 import DefaultLayout from "backend/layout/DefaultLayout";
 import Login from "backend/Login";
+import AuthMiddleware from "backend/middleware/AuthMiddleware";
+import GuestMiddleware from "backend/middleware/GuestMiddleware";
 import Home from "Home";
 import HomeLayout from "layouts/HomeLayout";
 import NotFound from "NotFound";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import reportWebVitals from "reportWebVitals";
 
 const router = createBrowserRouter([
@@ -29,23 +35,31 @@ const router = createBrowserRouter([
       </HomeLayout>
     ),
   },
+
   {
     path: "/admin/login",
     element: (
-      <DefaultLayout>
-        <Login />
-      </DefaultLayout>
+      <GuestMiddleware>
+        <DefaultLayout>
+          <Login />
+        </DefaultLayout>
+      </GuestMiddleware>
     ),
   },
-
+  {
+    path: "/admin",
+    element: <Navigate replace={true} to="/admin/login" />,
+  },
   {
     path: "/admin/dashboard",
     element: (
-      <DefaultLayout>
-        <DashboardLayout>
-          <Dashboard />
-        </DashboardLayout>
-      </DefaultLayout>
+      <AuthMiddleware>
+        <DefaultLayout>
+          <DashboardLayout>
+            <Dashboard />
+          </DashboardLayout>
+        </DefaultLayout>
+      </AuthMiddleware>
     ),
   },
   {

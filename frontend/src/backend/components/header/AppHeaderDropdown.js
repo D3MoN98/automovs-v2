@@ -11,8 +11,32 @@ import {
 } from "@coreui/react";
 
 import avatar8 from "assets/images/avatars/8.jpg";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { logoutAsync } from "store/authSlice";
 
 const AppHeaderDropdown = () => {
+  const [logoutSuccessful, setLogoutSuccessful] = useState(false);
+  const dispatch = useDispatch();
+
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    dispatch(logoutAsync())
+      .then((resultAction) => {
+        if (logoutAsync.fulfilled.match(resultAction)) {
+          toast.success("Logout successfull");
+          setLogoutSuccessful(true);
+        } else {
+          const error = resultAction.error;
+          throw error;
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -31,7 +55,8 @@ const AppHeaderDropdown = () => {
           Settings
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem href="#" onClick={logoutHandler}>
+          {logoutSuccessful && <Navigate replace={true} to="/admin/login" />}
           <CIcon icon={cilLockLocked} className="me-2" />
           Logout
         </CDropdownItem>

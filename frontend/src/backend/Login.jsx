@@ -1,65 +1,122 @@
-import { cilLockLocked, cilUser } from "@coreui/icons";
-import CIcon from "@coreui/icons-react";
 import {
-  CButton,
   CCard,
   CCardBody,
   CCardGroup,
   CCol,
   CContainer,
-  CForm,
-  CFormInput,
-  CInputGroup,
-  CInputGroupText,
   CRow,
 } from "@coreui/react";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { loginAsync } from "store/authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const [loginDetails, setLoginDetails] = useState({
+    email: "sjgalaxy98@gmail.com",
+    password: "password",
+  });
+  const [loginSuccessful, setLoginSuccessful] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: loginDetails,
+  });
+
+  const onSubmit = (data) => {
+    // Handle form submission
+    dispatch(loginAsync(data))
+      .then((resultAction) => {
+        if (loginAsync.fulfilled.match(resultAction)) {
+          reset(loginDetails);
+          toast.success("Login successfull");
+          setLoginSuccessful(true);
+        } else {
+          const error = resultAction.error;
+          throw error;
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={6}>
+          <CCol md={4}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">
-                      Sign In to your account
-                    </p>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
-                      <CFormInput
-                        placeholder="Username"
-                        autoComplete="username"
+                  <h1>Login</h1>
+                  <p className="text-medium-emphasis">
+                    Sign In to your account
+                  </p>
+                  {loginSuccessful && (
+                    <Navigate to="/admin/dashboard" replace={true} />
+                  )}
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="mb-3">
+                      <label htmlFor="email" className="form-label">
+                        Email
+                      </label>
+                      <Controller
+                        name="email"
+                        control={control}
+                        rules={{
+                          required: "Email is required",
+                          pattern: {
+                            value: /\S+@\S+\.\S+/,
+                            message: "Invalid email address",
+                          },
+                        }}
+                        render={({ field }) => (
+                          <input
+                            type="email"
+                            className={`form-control ${
+                              errors.email ? "is-invalid" : ""
+                            }`}
+                            id="email"
+                            {...field}
+                          />
+                        )}
                       />
-                    </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
-                      <CFormInput
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="password" className="form-label">
+                        Password
+                      </label>
+                      <Controller
+                        name="password"
+                        control={control}
+                        rules={{
+                          required: "Password is required",
+                        }}
+                        render={({ field }) => (
+                          <input
+                            type="password"
+                            className={`form-control ${
+                              errors.password ? "is-invalid" : ""
+                            }`}
+                            id="password"
+                            {...field}
+                          />
+                        )}
                       />
-                    </CInputGroup>
-                    <CRow>
-                      <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
-                          Login
-                        </CButton>
-                      </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          Forgot password?
-                        </CButton>
-                      </CCol>
-                    </CRow>
-                  </CForm>
+                    </div>
+
+                    <button type="submit" className="btn btn-primary">
+                      Log In
+                    </button>
+                  </form>
                 </CCardBody>
               </CCard>
             </CCardGroup>
